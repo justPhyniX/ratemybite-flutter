@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ratemybite/assets/elements/barcode_scanner.dart';
 import 'package:ratemybite/assets/elements/search_bar.dart';
 
 class ScanPage extends StatelessWidget {
@@ -14,8 +15,11 @@ class ScanPage extends StatelessWidget {
           'lib/assets/icons/top_bar/logo.svg',
         )
       ),
-      body: Center(
-        child: MySearchBar()
+      body: Column(
+        children: [
+          MySearchBar(),
+          MyBarcodeScanner(),
+        ]
       ),
     );
   }
