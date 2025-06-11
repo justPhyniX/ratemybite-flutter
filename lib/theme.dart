@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 //DARK THEME PALETTE
 const Color myMainColor = Color.fromARGB(255, 86, 179, 86);
 const Color myBackground = Color.fromARGB(255, 22, 29, 29);
