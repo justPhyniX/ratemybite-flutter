@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ratemybite/assets/elements/history_item.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
@@ -17,8 +18,10 @@ class HistoryPage extends StatelessWidget {
         ),
       ),
       body: const Center(
-        child: Text(
-            'History'
+        child: Column(
+          children: [
+            HistoryItem(),
+          ],
         ),
       ),
     );
