@@ -1,0 +1,2 @@
+C:/Users/Nikos/Desktop/University/Thesis/THESIS/android/app/.cxx/Debug/2ew3m6m1/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/Nikos/Desktop/University/Thesis/THESIS/android/app/.cxx/Debug/2ew3m6m1/x86_64/CMakeFiles/rebuild_cache.dir

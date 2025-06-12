@@ -1,16 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(
-    MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Nunito',
-      ),
-      home: ProductInfo(),
-  ));
-
-}
-
 class ProductInfo extends StatelessWidget {
   const ProductInfo({super.key});
 
@@ -107,7 +96,7 @@ class ProductInfo extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(7),
                                   ),
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color: Theme.of(context).colorScheme.primaryContainer,
                                 ),
                                 child: RichText(
                                   text: TextSpan(
@@ -137,7 +126,7 @@ class ProductInfo extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(7),
                                   ),
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color: Theme.of(context).colorScheme.primaryContainer,
                                 ),
                                 child: RichText(
                                   text: TextSpan(
@@ -166,7 +155,7 @@ class ProductInfo extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(7),
                                   ),
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color: Theme.of(context).colorScheme.primaryContainer,
                                 ),
                                 child: RichText(
                                   text: TextSpan(

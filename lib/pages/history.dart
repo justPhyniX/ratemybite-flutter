@@ -19,7 +19,10 @@ class HistoryPage extends StatelessWidget {
       ),
       body: const Center(
         child: Column(
+          spacing: 10,
           children: [
+            HistoryItem(),
+            HistoryItem(),
             HistoryItem(),
           ],
         ),
