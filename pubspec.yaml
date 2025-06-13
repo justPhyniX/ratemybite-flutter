@@ -65,7 +65,7 @@ flutter:
     - lib/assets/icons/navigation_bar/
     - lib/assets/icons/top_bar/
     - lib/assets/icons/ratings/
-    - lib/assets/icons/history/
+    - lib/assets/icons/product/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
