@@ -99,7 +99,7 @@ class _HistoryItemState extends State<HistoryItem> {
             Container(
               child: IconButton(
                 onPressed: () {
-                  print('HELLOOOOOO!!!!!!!');
+                  print('Delete History Item Button Pressed!!!');
                 },
                 icon: ImageIcon(
                   AssetImage(
