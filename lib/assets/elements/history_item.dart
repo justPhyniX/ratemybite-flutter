@@ -13,14 +13,7 @@ class _HistoryItemState extends State<HistoryItem> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ProductInfo()),
-        );
-      },
-      child: Container(
+    return Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
@@ -34,7 +27,14 @@ class _HistoryItemState extends State<HistoryItem> {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: Row(
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProductInfo()),
+            );
+          },
+          child: Row(
           children: [
 
             //Selector Checkbox
@@ -112,7 +112,7 @@ class _HistoryItemState extends State<HistoryItem> {
 
           ],
         ),
-      ),
-    );
+        ),
+      );
   }
 }

@@ -17,16 +17,21 @@ class HistoryPage extends StatelessWidget {
           ),
         ),
       ),
-      body: const Center(
-        child: Column(
-          spacing: 10,
-          children: [
-            HistoryItem(),
-            HistoryItem(),
-            HistoryItem(),
-          ],
+      body: const SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: Center(
+            child: Column(
+              spacing: 10,
+              children: [
+                HistoryItem(),
+                HistoryItem(),
+                HistoryItem(),
+              ],
+            ),
+          ),
         ),
-      ),
+      )
     );
   }
 }
