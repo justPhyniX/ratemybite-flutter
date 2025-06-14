@@ -4,6 +4,8 @@ import 'package:ratemybite/pages/more.dart';
 import 'package:ratemybite/pages/scan.dart';
 import 'package:ratemybite/theme.dart';
 
+
+
 void main() {
   runApp(const MyApp());
 }

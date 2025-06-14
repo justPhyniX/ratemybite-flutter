@@ -103,7 +103,7 @@ class _HistoryItemState extends State<HistoryItem> {
                 },
                 icon: ImageIcon(
                   AssetImage(
-                    'lib/assets/icons/history/delete_icon.png'
+                    'lib/assets/icons/product/delete_icon.png'
                   )
                 ),
               ),
