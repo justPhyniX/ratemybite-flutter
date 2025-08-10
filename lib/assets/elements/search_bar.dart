@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ratemybite/DataService.dart';
+import 'package:ratemybite/Models/DTOs/ProductDto.dart';
+import 'package:ratemybite/pages/product_info.dart';
 
 class MySearchBar extends StatefulWidget {
   const MySearchBar({super.key});
@@ -10,30 +13,38 @@ class MySearchBar extends StatefulWidget {
 class _MySearchBarState extends State<MySearchBar> {
   @override
   Widget build(BuildContext context) {
+    final dataService = DataService();  //handles the api calls
+    
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Align(
         alignment: Alignment.topCenter,
-        child: SearchBar(
-          leading: const Icon(Icons.search),
-          hintText: 'Search',
-          backgroundColor: WidgetStateProperty.all(
-              Theme.of(context).colorScheme.primaryContainer
-          ),
-          shadowColor: WidgetStateProperty.all(Colors.black.withAlpha(0)),
-          shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(7.0)
-              )
-          ),
-          padding: WidgetStateProperty.all(
-              EdgeInsets.symmetric(horizontal: 10.0)
-          ),
-          //onChanged: (query) {/*Update suggestions(?) with each letter*/},
-          //onSubmitted: /*does the search*/,
-          //onTap: /*on focus*/
-          //onTapOutside: /*out of focus*/,
-        ),
+        child: SearchAnchor(
+          builder: (BuildContext context, SearchController controller) {
+            return SearchBar(
+              controller: controller,
+              padding: const WidgetStatePropertyAll<EdgeInsets>(
+                EdgeInsets.symmetric(horizontal: 16.0),
+              ),
+              onTap: () { },
+              onSubmitted: (productName) {
+                Future<ProductDto?>? product = dataService.GetProductByName(productName);   //get the desired product
+
+                if(product != null)
+                {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProductInfo(awaitingProduct: product,))
+                  );
+                }
+                
+              },
+              leading: const Icon(Icons.search),
+              hintText: "Search",
+              //hintStyle: ,
+            );
+          }, suggestionsBuilder: (BuildContext context, SearchController controller) { return []; },
+        )
       )
     );
   }
