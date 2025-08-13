@@ -3,15 +3,45 @@ import 'package:http/http.dart' as http;
 import 'package:ratemybite/Models/DTOs/ProductDto.dart';
 
 class DataService {
+  // Private constructor
+  DataService._privateConstructor();
+  
+  // Single instance
+  static final DataService _instance = DataService._privateConstructor();
+  
+  // Factory constructor to return the same instance
+  factory DataService() {
+    return _instance;
+  }
+  
   final String baseUrl = 'http://10.0.2.2:8080/'; //ONLY FOR EMULATOR
 
   Future<ProductDto?> GetProductByName(String productName) async {
     //Assemble request endpoint
-    String endpoint = '${baseUrl}products/get?name=${productName}';
+    String endpoint = '${baseUrl}products/get?name=$productName';
 
     final response = await http.get(Uri.parse(endpoint));
 
-    //If request successful return a Product else throw exception
+    //If request successful return a Product
+    if (response.statusCode == 200) {
+      try {
+        final jsonList = jsonDecode(response.body) as List;
+        return ProductDto.fromJson(jsonList.first);
+      } catch (e) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  Future<ProductDto?> GetProductByBarcode(String barcode) async {
+    //Assemble request endpoint
+    String endpoint = '${baseUrl}products/get?barcode=$barcode';
+
+    final response = await http.get(Uri.parse(endpoint));
+
+    //If request successful return a Product
     if (response.statusCode == 200) {
       final jsonList = jsonDecode(response.body) as List;
       return ProductDto.fromJson(jsonList.first);

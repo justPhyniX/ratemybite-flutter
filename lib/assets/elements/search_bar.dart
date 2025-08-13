@@ -27,23 +27,54 @@ class _MySearchBarState extends State<MySearchBar> {
                 EdgeInsets.symmetric(horizontal: 16.0),
               ),
               onTap: () { },
-              onSubmitted: (productName) {
-                Future<ProductDto?>? product = dataService.GetProductByName(productName);   //get the desired product
+              onSubmitted: (productName) async {
 
-                if(product != null)
-                {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProductInfo(awaitingProduct: product,))
-                  );
+                if(productName.isNotEmpty) {
+                  ProductDto? product = await dataService.GetProductByName(productName);   //get the desired product
+
+                  if(product != null)
+                  {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProductInfo(awaitingProduct: Future.value(product),))
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text("Product not found. Would you like to add a new product?"),
+                        duration: const Duration(seconds: 5),
+                        action: SnackBarAction(
+                          label: 'Add Product',
+                          textColor: Theme.of(context).colorScheme.primary,
+                          onPressed: () {
+                            // TODO: Navigate to add product form
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));
+                          },
+                        ),
+                      )
+                    );
+                  }
                 }
-                
               },
               leading: const Icon(Icons.search),
-              hintText: "Search",
-              //hintStyle: ,
+              hintText: "Search Product Name",
+              hintStyle: WidgetStateProperty.all(
+                const TextStyle(
+                  color: Color.fromARGB(100, 255, 255, 255),
+                ),
+              ),
+              backgroundColor: WidgetStateProperty.all(
+                Theme.of(context).colorScheme.primaryContainer,
+              ),
+              shadowColor: WidgetStateProperty.all(Colors.black.withAlpha(0)),
+              shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(7.0),
+                ),
+              ),
             );
           }, suggestionsBuilder: (BuildContext context, SearchController controller) { return []; },
+          isFullScreen: false,
         )
       )
     );

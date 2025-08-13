@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ratemybite/DataService.dart';
 import 'package:ratemybite/Models/DTOs/ProductDto.dart';
 
 class ProductInfo extends StatelessWidget {
