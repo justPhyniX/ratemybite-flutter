@@ -10,16 +10,19 @@ class ScanPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: SvgPicture.asset(
           'lib/assets/icons/top_bar/logo.svg',
         )
       ),
-      body: Column(
-        children: [
-          MySearchBar(),
-          MyBarcodeScanner(),
-        ]
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            MySearchBar(),
+            MyBarcodeScanner(),
+          ]
+        ),
       ),
     );
   }

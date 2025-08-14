@@ -21,41 +21,43 @@ class _MySearchBarState extends State<MySearchBar> {
         alignment: Alignment.topCenter,
         child: SearchAnchor(
           builder: (BuildContext context, SearchController controller) {
+            Future<void> performSearch(String productName) async {
+              if(productName.isNotEmpty) {
+                ProductDto? product = await dataService.GetProductByName(productName);   //get the desired product
+
+                if(product != null)
+                {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProductInfo(awaitingProduct: Future.value(product),))
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text("Product not found. Would you like to add a new product?"),
+                      duration: const Duration(seconds: 5),
+                      action: SnackBarAction(
+                        label: 'Add Product',
+                        textColor: Theme.of(context).colorScheme.primary,
+                        onPressed: () {
+                          // TODO: Navigate to add product form
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));
+                        },
+                      ),
+                    )
+                  );
+                }
+              }
+            }
+
             return SearchBar(
               controller: controller,
               padding: const WidgetStatePropertyAll<EdgeInsets>(
                 EdgeInsets.symmetric(horizontal: 16.0),
               ),
               onTap: () { },
-              onSubmitted: (productName) async {
-
-                if(productName.isNotEmpty) {
-                  ProductDto? product = await dataService.GetProductByName(productName);   //get the desired product
-
-                  if(product != null)
-                  {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ProductInfo(awaitingProduct: Future.value(product),))
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text("Product not found. Would you like to add a new product?"),
-                        duration: const Duration(seconds: 5),
-                        action: SnackBarAction(
-                          label: 'Add Product',
-                          textColor: Theme.of(context).colorScheme.primary,
-                          onPressed: () {
-                            // TODO: Navigate to add product form
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));
-                          },
-                        ),
-                      )
-                    );
-                  }
-                }
-              },
+              onSubmitted: performSearch,
+              textInputAction: TextInputAction.search,
               leading: const Icon(Icons.search),
               hintText: "Search Product Name",
               hintStyle: WidgetStateProperty.all(
