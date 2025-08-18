@@ -13,7 +13,10 @@ class MyBarcodeScanner extends StatefulWidget {
 }
 
 class _MyBarcodeScannerState extends State<MyBarcodeScanner> {
-  //BarcodeViewController? controller;
+  final MobileScannerController controller = MobileScannerController(
+    detectionSpeed: DetectionSpeed.noDuplicates,
+    facing: CameraFacing.back,
+  );
   bool _hasPermission = false;
   bool _isLoading = true;
 
@@ -45,7 +48,7 @@ class _MyBarcodeScannerState extends State<MyBarcodeScanner> {
 
     if (_isLoading) {
       return const SizedBox(
-        width: 370,
+        width: 340,
         height: 500,
         child: Center(
           child: CircularProgressIndicator(),
@@ -55,7 +58,7 @@ class _MyBarcodeScannerState extends State<MyBarcodeScanner> {
 
     if (!_hasPermission) {
       return SizedBox(
-        width: 370,
+        width: 340,
         height: 500,
         child: Center(
           child: Column(
@@ -71,12 +74,7 @@ class _MyBarcodeScannerState extends State<MyBarcodeScanner> {
                 'Camera permission is required\nto scan barcodes',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _checkCameraPermission,
-                child: const Text('Grant Permission'),
-              ),
+              )
             ],
           ),
         ),
@@ -84,36 +82,63 @@ class _MyBarcodeScannerState extends State<MyBarcodeScanner> {
     }
 
     return SizedBox(
-      width: 370,
+      width: 340,
       height: 500,
-      child: MobileScanner(
-        onDetect: (barcodeCapture) async {
-          String? barcode = barcodeCapture.barcodes.first.rawValue;
-          print('Barcode found! $barcode');
+      child: Stack(
+        children: [
+          MobileScanner(
+            controller: controller,
+            onDetect: (barcodeCapture) async {
+              String? barcode = barcodeCapture.barcodes.first.rawValue;
 
-          ProductDto? product = await dataService.GetProductByBarcode(barcode ??= '0');
-          if (product != null) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ProductInfo(awaitingProduct: Future.value(product))),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text("Product not found. Would you like to add a new product?"),
-                duration: const Duration(seconds: 5),
-                action: SnackBarAction(
-                  label: 'Add Product',
-                  textColor: Theme.of(context).colorScheme.primary,
-                  onPressed: () {
-                    // TODO: Navigate to add product form
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));
-                  },
+              ProductDto? product = await dataService.GetProductByBarcode(barcode ??= '0');
+              if (product != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProductInfo(awaitingProduct: Future.value(product))),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text("Product not found. Would you like to add a new product?"),
+                    duration: const Duration(seconds: 5),
+                    action: SnackBarAction(
+                      label: 'Add Product',
+                      textColor: Theme.of(context).colorScheme.primary,
+                      onPressed: () {
+                        // TODO: Navigate to add product form
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));
+                      },
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+          // Scan barcode hint
+          Positioned(
+            bottom: 80,
+            left: 20,
+            right: 20,
+            child: Center(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(100, 0, 0, 0),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Text(
+                  'Scan Product Barcode',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-            );
-          }
-        },
+            ),
+          ),
+        ],
       ),
     );
   }
