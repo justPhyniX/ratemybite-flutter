@@ -29,10 +29,10 @@ class _HistoryItemState extends State<HistoryItem> {
         ),
         child: InkWell(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ProductInfo()),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => const ProductInfo()),
+            // );
           },
           child: Row(
           children: [

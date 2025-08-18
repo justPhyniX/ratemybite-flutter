@@ -1,26 +1,54 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:ratemybite/Models/DTOs/ProductDto.dart';
 
 class DataService {
-  static String foodName = '';
-  static String companyName = '';
+  // Private constructor
+  DataService._privateConstructor();
+  
+  // Single instance
+  static final DataService _instance = DataService._privateConstructor();
+  
+  // Factory constructor to return the same instance
+  factory DataService() {
+    return _instance;
+  }
+  
+  //final String baseUrl = 'http://10.0.2.2:8080/'; // FOR EMULATOR
+  final String baseUrl = 'http://10.17.32.105:8080/'; // FOR PHYSICAL DEVICE
 
-  Future<Map<String, String>> fetchData() async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:8080/products/get/1'));
+  Future<ProductDto?> GetProductByName(String productName) async {
+    //Assemble request endpoint
+    String endpoint = '${baseUrl}products/get?name=$productName';
 
-    if(response.statusCode == 200) {
-      final data = jsonDecode(response.body);
+    final response = await http.get(Uri.parse(endpoint));
 
-      return {
-        "foodName": data["name"],
-        "companyName": data["company"]["name"]
-      };
+    //If request successful return a Product
+    if (response.statusCode == 200) {
+      try {
+        final jsonList = jsonDecode(response.body) as List;
+        return ProductDto.fromJson(jsonList.first);
+      } catch (e) {
+        return null;
+      }
     } else {
-      print('Error fetching data: ${response.statusCode}');
-      return {
-        "foodName": "Error",
-        "companyName": "Failed to load"
-      };
+      return null;
+    }
+  }
+
+  Future<ProductDto?> GetProductByBarcode(String barcode) async {
+    //Assemble request endpoint
+    String endpoint = '${baseUrl}products/get?barcode=$barcode';
+
+    final response = await http.get(Uri.parse(endpoint));
+
+    //If request successful return a Product
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.body) as List;
+      return ProductDto.fromJson(jsonList.first);
+    } else {
+      return null;
     }
   }
 }
+
