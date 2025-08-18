@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ratemybite/DataService.dart';
+import 'package:ratemybite/data_service.dart';
 import 'package:ratemybite/Models/DTOs/ProductDto.dart';
 import 'package:ratemybite/pages/product_info.dart';
 

@@ -6,7 +6,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
-        android:label="ratebybite"
+        android:label="Rate My Bite"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -85,10 +85,11 @@ class ProductInfo extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: Image(
-                            image: AssetImage(
-                              'lib/assets/icons/ratings/Product Image.png',
-                            ),
+                          child: Image.network(
+                            product.productImage,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Icon(Icons.broken_image, size: 100);
+                            },
                           ),
                         ),
                         Divider(
