@@ -15,8 +15,8 @@ class DataService {
   }
   
   //final String baseUrl = 'http://10.0.2.2:8080/'; // FOR EMULATOR
-  //final String baseUrl = 'http://192.168.2.6:8080/'; // FOR PHYSICAL DEVICE AT HOME
-  final String baseUrl = 'http://10.17.32.105:8080/'; // FOR PHYSICAL DEVICE AT WORK
+  final String baseUrl = 'http://192.168.2.6:8080/'; // FOR PHYSICAL DEVICE AT HOME
+  //final String baseUrl = 'http://10.17.32.105:8080/'; // FOR PHYSICAL DEVICE AT WORK
 
   Future<ProductDto?> GetProductByName(String productName) async {
     //Assemble request endpoint
@@ -59,7 +59,11 @@ class DataService {
     final response = await http.get(Uri.parse(endpoint));
 
     //If request successful return list of ingredient names
-    
+    if (response.statusCode == 200) {
+      final jsonList = jsonDecode(response.body) as List;
+      return jsonList.map<String>((item) => item['name'] as String).toList();
+    } else {
+      return [];
+    }
   }
 }
-

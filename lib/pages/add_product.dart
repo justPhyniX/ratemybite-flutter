@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ratemybite/Models/DTOs/ProductDto.dart';
 import 'package:ratemybite/theme.dart';
 
 void main() {
@@ -30,17 +29,15 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  // final ProductDto product = ProductDto();
-  final TextEditingController _formItemController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final TextEditingController _barcodeController = TextEditingController();
+  final TextEditingController _productNameController = TextEditingController();
+  final TextEditingController _brandController = TextEditingController();
 
   @override
   void dispose() {
-    _formItemController.dispose();
+    _barcodeController.dispose();
+    _productNameController.dispose();
+    _brandController.dispose();
     super.dispose();
   }
 
@@ -64,49 +61,50 @@ class _AddProductState extends State<AddProduct> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  //barcode number
-                  Container(
-                    child: TextFormField(
-                      controller: _formItemController,
-                      decoration: InputDecoration(
-                        labelText: 'Barcode Number',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        filled: true,
-                        fillColor: Theme.of(context).colorScheme.primaryContainer,
+                  // Barcode number
+                  TextFormField(
+                    controller: _barcodeController,
+                    decoration: InputDecoration(
+                      labelText: 'Barcode Number',
+                      labelStyle: TextStyle(color: Colors.white.withAlpha(125)),
+                      floatingLabelStyle: TextStyle(color: Colors.white),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7),
                       ),
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.primaryContainer,
                     ),
                   ),
                   SizedBox(height: 20),
-                  Container(
-                    child: TextFormField(
-                      controller: _formItemController,
-                      decoration: InputDecoration(
-                        labelText: 'Product Name',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        filled: true,
-                        fillColor: Theme.of(context).colorScheme.primaryContainer,
+                  // Product name
+                  TextFormField(
+                    controller: _productNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Product Name',
+                      labelStyle: TextStyle(color: Colors.white.withAlpha(125)),
+                      floatingLabelStyle: TextStyle(color: Colors.white),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7),
                       ),
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.primaryContainer,
                     ),
                   ),
                   SizedBox(height: 20),
-                  Container(
-                    child: TextFormField(
-                      controller: _formItemController,
-                      decoration: InputDecoration(
-                        labelText: 'Brand',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        filled: true,
-                        fillColor: Theme.of(context).colorScheme.primaryContainer,
+                  // Brand
+                  TextFormField(
+                    controller: _brandController,
+                    decoration: InputDecoration(
+                      labelText: 'Brand',
+                      labelStyle: TextStyle(color: Colors.white.withAlpha(125)),
+                      floatingLabelStyle: TextStyle(color: Colors.white),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7),
                       ),
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.primaryContainer,
                     ),
                   ),
-                  
                 ],
               ),
             ),
