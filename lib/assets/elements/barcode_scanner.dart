@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ratemybite/data_service.dart';
 import 'package:ratemybite/Models/DTOs/ProductDto.dart';
+import 'package:ratemybite/pages/add_product.dart';
 import 'package:ratemybite/pages/product_info.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -107,7 +108,7 @@ class _MyBarcodeScannerState extends State<MyBarcodeScanner> {
                       textColor: Theme.of(context).colorScheme.primary,
                       onPressed: () {
                         // TODO: Navigate to add product form
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));
                       },
                     ),
                   ),

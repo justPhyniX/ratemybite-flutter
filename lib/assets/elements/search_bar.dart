@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ratemybite/data_service.dart';
 import 'package:ratemybite/Models/DTOs/ProductDto.dart';
+import 'package:ratemybite/pages/add_product.dart';
 import 'package:ratemybite/pages/product_info.dart';
 
 class MySearchBar extends StatefulWidget {
@@ -41,7 +42,7 @@ class _MySearchBarState extends State<MySearchBar> {
                         textColor: Theme.of(context).colorScheme.primary,
                         onPressed: () {
                           // TODO: Navigate to add product form
-                          // Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));
                         },
                       ),
                     )
