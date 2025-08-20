@@ -29,7 +29,7 @@ class _MySearchBarState extends State<MySearchBar> {
                 {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProductInfo(awaitingProduct: Future.value(product),))
+                    MaterialPageRoute(builder: (context) => ProductInfo(awaitingProduct: Future.value(product), dataService: dataService))
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
