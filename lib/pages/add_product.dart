@@ -108,12 +108,11 @@ class _AddProductState extends State<AddProduct> {
                         ),
                         child: _productImage == null
                             ? Icon(
-                                Icons.photo_camera,
-                                color: Colors.white.withAlpha(180),
-                                size: 48,
+                                Icons.add_a_photo_outlined,
+                                size: 50,
                               )
                             : ClipRRect(
-                                borderRadius: BorderRadius.circular(14),
+                                borderRadius: BorderRadius.circular(7),
                                 child: Image.file(
                                   _productImage!,
                                   fit: BoxFit.cover,

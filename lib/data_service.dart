@@ -14,9 +14,9 @@ class DataService {
     return _instance;
   }
   
-  //final String baseUrl = 'http://10.0.2.2:8080/'; // FOR EMULATOR
+  final String baseUrl = 'http://10.0.2.2:8080/'; // FOR EMULATOR
   //final String baseUrl = 'http://192.168.2.6:8080/'; // FOR PHYSICAL DEVICE AT HOME
-  final String baseUrl = 'http://10.17.32.107:8080/'; // FOR PHYSICAL DEVICE AT WORK
+  //final String baseUrl = 'http://10.17.32.107:8080/'; // FOR PHYSICAL DEVICE AT WORK
 
   Future<ProductDto?> GetProductByName(String productName) async {
     //Assemble request endpoint
