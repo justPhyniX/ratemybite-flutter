@@ -96,7 +96,7 @@ class _AddProductState extends State<AddProduct> {
                     GestureDetector(
                       onTap: _pickImage,
                       child: Container(
-                        width: 350,
+                        width: double.infinity,
                         height: 230,
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primaryContainer,
@@ -109,7 +109,7 @@ class _AddProductState extends State<AddProduct> {
                         child: _productImage == null
                             ? Icon(
                                 Icons.add_a_photo_outlined,
-                                size: 50,
+                                size: 80,
                               )
                             : ClipRRect(
                                 borderRadius: BorderRadius.circular(7),
@@ -130,6 +130,24 @@ class _AddProductState extends State<AddProduct> {
                         floatingLabelStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.white.withAlpha(80),
+                            width: 2,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.white.withAlpha(80),
+                            width: 2,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.white.withAlpha(80),
+                            width: 2,
+                          ),
                         ),
                         filled: true,
                         fillColor: Theme.of(context).colorScheme.primaryContainer,
@@ -145,6 +163,24 @@ class _AddProductState extends State<AddProduct> {
                         floatingLabelStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.white.withAlpha(80),
+                            width: 2,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.white.withAlpha(80),
+                            width: 2,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.white.withAlpha(80),
+                            width: 2,
+                          ),
                         ),
                         filled: true,
                         fillColor: Theme.of(context).colorScheme.primaryContainer,
@@ -160,6 +196,24 @@ class _AddProductState extends State<AddProduct> {
                         floatingLabelStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.white.withAlpha(80),
+                            width: 2,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.white.withAlpha(80),
+                            width: 2,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.white.withAlpha(80),
+                            width: 2,
+                          ),
                         ),
                         filled: true,
                         fillColor: Theme.of(context).colorScheme.primaryContainer,
@@ -189,6 +243,24 @@ class _AddProductState extends State<AddProduct> {
                         floatingLabelStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.white.withAlpha(80),
+                            width: 2,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.white.withAlpha(80),
+                            width: 2,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(
+                            color: Colors.white.withAlpha(80),
+                            width: 2,
+                          ),
                         ),
                         filled: true,
                         fillColor: Theme.of(context).colorScheme.primaryContainer,
@@ -207,8 +279,8 @@ class _AddProductState extends State<AddProduct> {
                         color: Theme.of(context).colorScheme.primaryContainer,
                         borderRadius: BorderRadius.all(Radius.circular(7)),
                         border: Border.all(
-                          color: Colors.white,
-                          width: 1,
+                          color: Colors.white.withAlpha(80),
+                          width: 2,
                         ),
                       ),
                       buttonIcon: Icon(
