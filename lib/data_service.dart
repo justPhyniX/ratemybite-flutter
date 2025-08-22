@@ -3,13 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:ratemybite/Models/DTOs/ProductDto.dart';
 
 class DataService {
-  // Private constructor
+  // Single Instance Data Service
   DataService._privateConstructor();
-  
-  // Single instance
   static final DataService _instance = DataService._privateConstructor();
-  
-  // Factory constructor to return the same instance
   factory DataService() {
     return _instance;
   }
@@ -81,4 +77,8 @@ class DataService {
       return [];
     }
   }
+
+  // Future<void> AddProduct(ProductDto) {
+
+  // }
 }

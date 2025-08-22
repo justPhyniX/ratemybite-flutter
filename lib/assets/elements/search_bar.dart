@@ -17,7 +17,7 @@ class _MySearchBarState extends State<MySearchBar> {
     final dataService = DataService();  //handles the api calls
     
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Align(
         alignment: Alignment.topCenter,
         child: SearchAnchor(
