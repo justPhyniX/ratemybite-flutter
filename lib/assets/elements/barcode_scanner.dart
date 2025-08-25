@@ -98,7 +98,7 @@ class _MyBarcodeScannerState extends State<MyBarcodeScanner> {
                 if (product != null) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProductInfo(awaitingProduct: Future.value(product))),
+                    MaterialPageRoute(builder: (context) => ProductInfo(awaitingProduct: Future.value(product), dataService: dataService)),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(

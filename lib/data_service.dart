@@ -35,6 +35,17 @@ class DataService {
     }
   }
 
+  Future<String> GetImageUrl(String imagePath) async {
+    // Get the path parts
+    List<String> pathParts = imagePath
+        .split('\\');
+
+    String folderName = pathParts[pathParts.length - 2];
+    String imageName = pathParts.last;
+
+    return '${baseUrl}uploads/images/$folderName/$imageName';
+  }
+
   Future<ProductDto?> GetProductByBarcode(String barcode) async {
     // Assemble request endpoint
     String endpoint = '${baseUrl}products/get?barcode=$barcode';
