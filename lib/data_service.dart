@@ -15,7 +15,7 @@ class DataService {
   }
   
   //final String baseUrl = 'http://10.0.2.2:8080/'; // FOR EMULATOR
-  final String baseUrl = 'http://10.17.32.105:8080/'; // FOR PHYSICAL DEVICE
+  final String baseUrl = 'http://10.17.32.158:8080/'; // FOR PHYSICAL DEVICE
 
   Future<ProductDto?> GetProductByName(String productName) async {
     //Assemble request endpoint
@@ -36,9 +36,20 @@ class DataService {
     }
   }
 
+  Future<String> GetImageUrl(String imagePath) async {
+    // Get the path parts
+    List<String> pathParts = imagePath
+        .split('\\');
+
+    String folderName = pathParts[pathParts.length - 2];
+    String imageName = pathParts.last;
+
+    return '${baseUrl}uploads/images/$folderName/$imageName';
+  }
+
   Future<ProductDto?> GetProductByBarcode(String barcode) async {
     //Assemble request endpoint
-    String endpoint = '${baseUrl}products/get?barcode=$barcode';
+    String endpoint = '${baseUrl}uploads/images/';
 
     final response = await http.get(Uri.parse(endpoint));
 

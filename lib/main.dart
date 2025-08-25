@@ -59,80 +59,66 @@ class _MyHomePageState extends State<MyHomePage> {
 
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(),
-        child: Container(
-          padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x33000000),
-                blurRadius: 20,
-                offset: Offset(0, -5),
-              )
-            ],
-          ),
-          child: BottomNavigationBar(
-            selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-            elevation: 0.0,
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            currentIndex: currentIndex,
-            onTap: (index) {
-              setState(() {
-                currentIndex = index;
-              });
-            },
-            items: [
-              BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage(
-                    'lib/assets/icons/navigation_bar/history_icon.png'
-                  ),
-                  color: Colors.white,
+        child: BottomNavigationBar(
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+          elevation: 0.0,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          currentIndex: currentIndex,
+          onTap: (index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage(
+                  'lib/assets/icons/navigation_bar/history_icon.png'
                 ),
-                label: 'History',
-                activeIcon: ImageIcon(
-                  AssetImage(
-                    'lib/assets/icons/navigation_bar/history_icon.png'
-                  ),
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                color: Colors.white,
               ),
-              BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage(
-                    'lib/assets/icons/navigation_bar/scan_icon.png'
-                  ),
-                  color: Colors.white,
+              label: 'History',
+              activeIcon: ImageIcon(
+                AssetImage(
+                  'lib/assets/icons/navigation_bar/history_icon.png'
                 ),
-                label: 'Scan',
-                activeIcon: ImageIcon(
-                  AssetImage(
-                    'lib/assets/icons/navigation_bar/scan_icon.png'
-                  ),
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                color: Theme.of(context).colorScheme.primary,
               ),
-              BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage(
-                    'lib/assets/icons/navigation_bar/more_icon.png'
-                  ),
-                  color: Colors.white,
+            ),
+            BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage(
+                  'lib/assets/icons/navigation_bar/scan_icon.png'
                 ),
-                label: 'More',
-                activeIcon: ImageIcon(
-                  AssetImage(
-                    'lib/assets/icons/navigation_bar/more_icon.png'
-                  ),
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                color: Colors.white,
               ),
-            ],
-            selectedItemColor: Theme.of(context).colorScheme.primary,
-
+              label: 'Scan',
+              activeIcon: ImageIcon(
+                AssetImage(
+                  'lib/assets/icons/navigation_bar/scan_icon.png'
+                ),
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage(
+                  'lib/assets/icons/navigation_bar/more_icon.png'
+                ),
+                color: Colors.white,
+              ),
+              label: 'More',
+              activeIcon: ImageIcon(
+                AssetImage(
+                  'lib/assets/icons/navigation_bar/more_icon.png'
+                ),
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ],
+          selectedItemColor: Theme.of(context).colorScheme.primary,
           ),
         ),
-      ),
-    );
+      );
   }
 }
