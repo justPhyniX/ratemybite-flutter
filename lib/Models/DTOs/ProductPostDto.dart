@@ -1,5 +1,3 @@
-import 'package:ratemybite/Models/Ingredient.dart';
-
 class ProductPostDto {
   final String barcode;
   final String foodCategory;
@@ -20,11 +18,11 @@ class ProductPostDto {
   Map<String, dynamic> toJson() {
     return {
       'barcode': barcode,
-      'foodCategory': foodCategory,
-      'company': brand,
+      'foodCategoryName': foodCategory,
+      'companyName': brand,
       'nutritionScore': rating,
       'name': productTitle,
-      'ingredients': ingredients
+      'ingredientNames': ingredients
     };
   }
 }
@@ -39,14 +37,14 @@ String rate(List<int> ingredientScores) {
 
   // Pick a letter depending on the average price
   if (average > 0 && average <= 20) {
-    return 'A';
+    return 'E';
   } else if (average > 20 && average <= 40) {
-    return 'B';
+    return 'D';
   } else if (average > 40 && average <= 60) {
     return 'C';
   } else if (average > 60 && average <= 80) {
-    return 'D';
+    return 'B';
   } else {
-    return 'E';
+    return 'A';
   }
 }

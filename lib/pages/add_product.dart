@@ -19,7 +19,6 @@ class _AddProductState extends State<AddProduct> {
   final TextEditingController _barcodeController = TextEditingController();
   final TextEditingController _productNameController = TextEditingController();
   final TextEditingController _brandController = TextEditingController();
-  final TextEditingController _foodCategoryController = TextEditingController();
 
   List<String> _ingredients = [];
   List<String> _foodCategories = [];
@@ -31,7 +30,6 @@ class _AddProductState extends State<AddProduct> {
   void initState() {
     super.initState();
     _fetchIngredients();
-    _fetchFoodCategories();
     _fetchFoodCategories();
   }
 
@@ -59,6 +57,21 @@ class _AddProductState extends State<AddProduct> {
     }
   }
 
+  // Capitalizes every word's first letter in a String
+  String capitalizeWords(String input) {
+    String lower = input.trim().toLowerCase();
+    StringBuffer result = StringBuffer();
+  
+    for (int i = 0; i < lower.length; i++) {
+      if (i == 0 || lower[i - 1] == ' ' || lower[i - 1] == '-') {
+        result.write(lower[i].toUpperCase());
+      } else {
+        result.write(lower[i]);
+      }
+    }
+    return result.toString();
+  }
+
   @override
   void dispose() {
     _barcodeController.dispose();
@@ -73,16 +86,13 @@ class _AddProductState extends State<AddProduct> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         toolbarHeight: 80,
-        title: Padding(
-          padding: EdgeInsets.only(left: 16.0),
-          child: Text(
-            'Add Product',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24
-            ),
+        title: Text(
+          'Add Product',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24
           ),
-        )
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -439,21 +449,46 @@ class _AddProductState extends State<AddProduct> {
           ),
           onPressed: () async {
             if (_addProductFormKey.currentState!.validate()) {
-              // Rate the product based on its provided ingredients
-              final ingredientScores = dataService.GetIngredientScores(_selectedIngredients);
-              
-              // Create a ProductPostDto from the user provided data
-              final product = ProductPostDto(
-                _barcodeController.text.trim(),
-                _selectedFoodCategory!,
-                _brandController.text.trim(),
-                rate(await ingredientScores),
-                _productNameController.text.trim(),
-                _selectedIngredients
-              );
+              try {
+                // Rate the product based on its provided ingredients
+                final ingredientScores = dataService.GetIngredientScores(_selectedIngredients);
 
+                // Create a ProductPostDto from the user provided data
+                final product = ProductPostDto(
+                  _barcodeController.text.trim(),
+                  capitalizeWords(_selectedFoodCategory!),
+                  capitalizeWords(_brandController.text),
+                  rate(await ingredientScores), // Generates a rating letter from selected ingredient scores
+                  capitalizeWords(_productNameController.text),
+                  _selectedIngredients
+                );
 
-              // TODO: send an actual productPostDto and check for exceptions with try-catch blocks
+                // Adds new product to database
+                await dataService.AddProduct(product, _productImage!);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text(
+                        "New product successfully added!",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      duration: const Duration(seconds: 5)
+                    )
+                  );
+
+                Navigator.pop(context);
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      e.toString(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    duration: Duration(seconds: 5),
+                    backgroundColor: Theme.of(context).colorScheme.error,
+                  ),
+                );
+              }
             }
           },
           child: Text(

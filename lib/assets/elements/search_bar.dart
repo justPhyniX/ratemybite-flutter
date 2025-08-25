@@ -35,13 +35,16 @@ class _MySearchBarState extends State<MySearchBar> {
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: const Text("Product not found. Would you like to add a new product?"),
-                      duration: const Duration(seconds: 5),
+                      content: const Text(
+                        "Product not found. Would you like to add a new product?",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      duration: const Duration(seconds: 8),
                       action: SnackBarAction(
                         label: 'Add Product',
-                        textColor: Theme.of(context).colorScheme.primary,
+                        textColor: Colors.white,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                         onPressed: () {
-                          // TODO: Navigate to add product form
                           Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));
                         },
                       ),

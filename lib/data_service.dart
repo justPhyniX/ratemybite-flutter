@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'package:ratemybite/Models/DTOs/ProductDto.dart';
 import 'package:ratemybite/Models/DTOs/ProductPostDto.dart';
@@ -12,9 +13,8 @@ class DataService {
     return _instance;
   }
   
-  final String baseUrl = 'http://10.0.2.2:8080/'; // FOR EMULATOR
-  //final String baseUrl = 'http://192.168.2.6:8080/'; // FOR PHYSICAL DEVICE AT HOME
-  //final String baseUrl = 'http://10.17.32.107:8080/'; // FOR PHYSICAL DEVICE AT WORK
+  // final String baseUrl = 'http://10.0.2.2:8080/'; // FOR EMULATOR
+  final String baseUrl = 'http://192.168.2.8:8080/'; // FOR PHYSICAL DEVICE AT HOME
 
   Future<ProductDto?> GetProductByName(String productName) async {
     // Assemble request endpoint
@@ -73,8 +73,8 @@ class DataService {
       var response = await http.get(Uri.parse(endpoint));
   
       if (response.statusCode == 200 && response.body != 'null') {
-        var jsonList = jsonDecode(response.body) as List;
-        scores.add(jsonList.first['points'] as int);
+        var jsonObject = jsonDecode(response.body) as Map<String, dynamic>;
+        scores.add(jsonObject['points'] as int);
       } else {
         throw 'Something went wrong with the ingredient retrieval';
       }
@@ -98,19 +98,36 @@ class DataService {
     }
   }
 
+  Future<void> CheckCompanyNames(String companyName) async {
+    // Assemble request endpoint for companies list
+    String companiesEndpoint = '${baseUrl}companies/get?name=$companyName';
+
+    // Check if company exists, if not, add it
+    final response = await http.get(Uri.parse(companiesEndpoint));
+    if(response.statusCode == 200 && response.body == 'null') {
+      String addCompanyEndpoint = '${baseUrl}companies/add?name=$companyName';
+
+      final postResponse = await http.post(Uri.parse(addCompanyEndpoint));
+      if(postResponse.statusCode != 201) {
+        throw Exception('Something went wrong with the new company addition');
+      }
+    }
+  }
+
   Future<void> AddProduct(ProductPostDto newProduct, File productImage) async {
     // Assemble request endpoint for product data
     String productDataEndpoint = '${baseUrl}products/add-with-names';
+    await CheckCompanyNames(newProduct.brand);
 
     // Send product data and get response
     final dataResponse = await http.post(
       Uri.parse(productDataEndpoint),
-      headers: {'Content-Type0': 'application/json'},
+      headers: {'Content-Type': 'application/json'},
       body: jsonEncode(newProduct.toJson()),
     );
 
     // If product data upload is successful try to upload product image
-    if (dataResponse.statusCode == 200) {
+    if (dataResponse.statusCode == 201) {
       
       // Get product ID
       String productEndpoint = '${baseUrl}products/get?barcode=${newProduct.barcode}';
@@ -135,10 +152,10 @@ class DataService {
 
       // Check if image upload was successful
       if(imageResponse.statusCode != 200) {
-        throw 'Something went wrong with the product image upload';
+        throw Exception('Something went wrong with the product image upload');
       }
     } else {
-      throw 'Something went wrong with the product data upload';
+      throw Exception('Something went wrong with the product data upload');
     }
   }
 }
