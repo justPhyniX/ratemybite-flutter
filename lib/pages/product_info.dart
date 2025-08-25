@@ -26,7 +26,7 @@ class ProductInfo extends StatelessWidget {
                 future: awaitingProduct,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(); // shows loading spinner
+                    return CircularProgressIndicator();
                   } else if (snapshot.hasError || !snapshot.hasData) {
                     return Text("Error fetching data");
                   } else {
@@ -83,22 +83,33 @@ class ProductInfo extends StatelessWidget {
                         // product image
                         Container(
                           padding: EdgeInsets.symmetric(vertical: 20),
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(7),
+                            child: FutureBuilder<String>(
+                              future: dataService.GetImageUrl(product.productImage),
+                              builder: (context, imageSnapshot) {
+                                if (imageSnapshot.connectionState == ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                } else if (imageSnapshot.hasError || !imageSnapshot.hasData) {
+                                  return Icon(Icons.broken_image, size: double.infinity);
+                                } else {
+                                  return SizedBox(
+                                    width: double.infinity,
+                                    height: MediaQuery.of(context).size.width - 60,
+                                    child: Image.network(
+                                      imageSnapshot.data!,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder: (context, child, loadingProgress) {
+                                        if (loadingProgress == null) return child;
+                                        return Center(child: CircularProgressIndicator());
+                                      },
+                                      errorBuilder: (context, error, stackTrace) =>
+                                          Icon(Icons.broken_image, size: double.infinity),
+                                    ),
+                                  );
+                                }
+                              },
                             ),
-                          ),
-                          child: FutureBuilder<String>(
-                            future: dataService.GetImageUrl(product.productImage),
-                            builder: (context, imageSnapshot) {
-                              if (imageSnapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              } else if (imageSnapshot.hasError || !imageSnapshot.hasData) {
-                                return Icon(Icons.broken_image, size: 350);
-                              } else {
-                                return Image.network(imageSnapshot.data!);
-                              }
-                            },
                           ),
                         ),
                         Divider(
