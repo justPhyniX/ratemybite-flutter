@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ratemybite/data_service.dart';
 import 'package:ratemybite/Models/DTOs/ProductDto.dart';
+import 'package:ratemybite/pages/add_product.dart';
 import 'package:ratemybite/pages/product_info.dart';
 
 class MySearchBar extends StatefulWidget {
@@ -16,7 +17,7 @@ class _MySearchBarState extends State<MySearchBar> {
     final dataService = DataService();  //handles the api calls
     
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Align(
         alignment: Alignment.topCenter,
         child: SearchAnchor(
@@ -34,14 +35,17 @@ class _MySearchBarState extends State<MySearchBar> {
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: const Text("Product not found. Would you like to add a new product?"),
-                      duration: const Duration(seconds: 5),
+                      content: const Text(
+                        "Product not found. Would you like to add a new product?",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      duration: const Duration(seconds: 8),
                       action: SnackBarAction(
                         label: 'Add Product',
-                        textColor: Theme.of(context).colorScheme.primary,
+                        textColor: Colors.white,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                         onPressed: () {
-                          // TODO: Navigate to add product form
-                          // Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AddProduct()));
                         },
                       ),
                     )

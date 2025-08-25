@@ -12,16 +12,21 @@ class ScanPage extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: SvgPicture.asset(
-          'lib/assets/icons/top_bar/logo.svg',
+        titleSpacing: 0,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SvgPicture.asset('lib/assets/icons/top_bar/logo.svg')
         )
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            MySearchBar(),
-            MyBarcodeScanner(),
-          ]
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SingleChildScrollView(
+            child: Column(children: [
+              MySearchBar(),
+              MyBarcodeScanner(),
+            ]),
+          ),
         ),
       ),
     );
