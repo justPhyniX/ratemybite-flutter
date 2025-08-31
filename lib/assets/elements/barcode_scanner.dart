@@ -93,6 +93,7 @@ class _MyBarcodeScannerState extends State<MyBarcodeScanner> {
               controller: controller,
               onDetect: (barcodeCapture) async {
                 String? barcode = barcodeCapture.barcodes.first.rawValue;
+                print(barcode); // For debugging
 
                 ProductDto? product = await dataService.GetProductByBarcode(barcode ??= '0');
                 if (product != null) {

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'package:ratemybite/Models/DTOs/ProductDto.dart';
 import 'package:ratemybite/Models/DTOs/ProductPostDto.dart';
@@ -13,8 +12,8 @@ class DataService {
     return _instance;
   }
   
-  // final String baseUrl = 'http://10.0.2.2:8080/'; // FOR EMULATOR
-  final String baseUrl = 'http://192.168.2.8:8080/'; // FOR PHYSICAL DEVICE AT HOME
+  final String baseUrl = 'http://10.0.2.2:8080/'; // FOR EMULATOR
+  // final String baseUrl = 'http://192.168.2.8:8080/'; // FOR PHYSICAL DEVICE AT HOME
 
   Future<ProductDto?> GetProductByName(String productName) async {
     // Assemble request endpoint
