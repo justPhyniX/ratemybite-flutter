@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:ratemybite/data_service.dart';
 import 'package:ratemybite/Models/DTOs/ProductDto.dart';
@@ -93,13 +94,13 @@ class _MyBarcodeScannerState extends State<MyBarcodeScanner> {
               controller: controller,
               onDetect: (barcodeCapture) async {
                 String? barcode = barcodeCapture.barcodes.first.rawValue;
-                print(barcode); // For debugging
+                log('Barcode successfully scanned:  $barcode'); // Logs barcode number in console for debugging
 
                 ProductDto? product = await dataService.GetProductByBarcode(barcode ??= '0');
                 if (product != null) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProductInfo(awaitingProduct: Future.value(product), dataService: dataService)),
+                    MaterialPageRoute(builder: (context) => ProductInfo(product: product, dataService: dataService)),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
