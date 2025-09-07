@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:ratemybite/Models/DTOs/ProductDto.dart';
+import 'package:ratemybite/data_service.dart';
 import 'package:ratemybite/pages/product_info.dart';
 
 class HistoryItem extends StatefulWidget {
-  const HistoryItem({super.key});
+  final ProductDto product;
+  final DataService dataService;
+
+  const HistoryItem({
+    super.key,
+    required this.product,
+    required this.dataService
+  });
 
   @override
   State<HistoryItem> createState() => _HistoryItemState();
@@ -29,14 +39,13 @@ class _HistoryItemState extends State<HistoryItem> {
         ),
         child: InkWell(
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const ProductInfo()),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProductInfo(product: widget.product, dataService: widget.dataService,)),
+            );
           },
           child: Row(
           children: [
-
             //Selector Checkbox
             Checkbox(
               shape: CircleBorder(),
@@ -52,46 +61,76 @@ class _HistoryItemState extends State<HistoryItem> {
             //Product Image
             ClipRRect(
               borderRadius: BorderRadius.circular(5),
-              child: Image(
-                image: AssetImage('lib/assets/icons/ratings/Product Image.png'),
-                width: 57,
-                height: 57,
-                fit: BoxFit.cover,
+              child: FutureBuilder<String>(
+                future: widget.dataService.GetImageUrl(widget.product.productImage),
+                builder: (context, imageSnapshot) {
+                  if (imageSnapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (imageSnapshot.hasError || !imageSnapshot.hasData) {
+                    return const Icon(Icons.broken_image, size: double.infinity);
+                  } else {
+                    return SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: Image.network(
+                        imageSnapshot.data!,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return const Center(child: CircularProgressIndicator());
+                        },
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(Icons.broken_image, size: 30),
+                      ),
+                    );
+                  }
+                },
               ),
             ),
-
+            SizedBox(
+              width: 10,
+            ),
             //Product Title And Brand
-            Container(
-              child: Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Product Title",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.product.productTitle,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
                     ),
-                    Text(
-                      "Brand",
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
+                  ),
+                  Text(
+                    widget.product.brand,
+                    style: TextStyle(
+                      fontSize: 12,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
 
             //Rating
             ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Image(
-                image: AssetImage( 'lib/assets/icons/ratings/A.png'),
-                width: 57,
-                height: 57,
-                fit: BoxFit.cover,
+              child: SvgPicture.asset(
+                (() {
+                  switch (widget.product.rating) {
+                    case 'A':
+                      return 'lib/assets/icons/ratings/A.svg';
+                    case 'B':
+                      return 'lib/assets/icons/ratings/B.svg';
+                    case 'C':
+                      return 'lib/assets/icons/ratings/C.svg';
+                    case 'D':
+                      return 'lib/assets/icons/ratings/D.svg';
+                    case 'E':
+                      return 'lib/assets/icons/ratings/E.svg';
+                    default:
+                      return '';
+                  }
+                })(),
               ),
             ),
 

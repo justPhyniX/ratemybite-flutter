@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:ratemybite/data_service.dart';
 import 'package:ratemybite/Models/DTOs/ProductDto.dart';
 import 'package:ratemybite/pages/add_product.dart';
@@ -15,6 +16,7 @@ class _MySearchBarState extends State<MySearchBar> {
   @override
   Widget build(BuildContext context) {
     final dataService = DataService();  //handles the api calls
+    final _myBox = Hive.box("HISTORY_BOX");
     
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -28,6 +30,10 @@ class _MySearchBarState extends State<MySearchBar> {
 
                 if(product != null)
                 {
+                  // Save product to search history
+                  _myBox.put('PRODUCT', product);
+
+                  // Send user to product page
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ProductInfo(product: product, dataService: dataService))
