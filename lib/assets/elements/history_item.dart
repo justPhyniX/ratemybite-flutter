@@ -7,11 +7,13 @@ import 'package:ratemybite/pages/product_info.dart';
 class HistoryItem extends StatefulWidget {
   final ProductDto product;
   final DataService dataService;
+  final VoidCallback deleteProduct;
 
   const HistoryItem({
     super.key,
     required this.product,
-    required this.dataService
+    required this.dataService,
+    required this.deleteProduct
   });
 
   @override
@@ -25,10 +27,7 @@ class _HistoryItemState extends State<HistoryItem> {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 16
-        ),
+        height: 95,
         decoration: ShapeDecoration(
           color: isChecked
           ? Theme.of(context).colorScheme.onPrimaryContainer
@@ -47,15 +46,21 @@ class _HistoryItemState extends State<HistoryItem> {
           child: Row(
           children: [
             //Selector Checkbox
-            Checkbox(
-              shape: CircleBorder(),
-              checkColor: Colors.black,
-              value: isChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  isChecked = value ?? false;
-                });
-              },
+            SizedBox(
+              height: double.infinity,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Checkbox(
+                  shape: CircleBorder(),
+                  checkColor: const Color.fromARGB(255, 255, 255, 255),
+                  value: isChecked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      isChecked = value ?? false;
+                    });
+                  },
+                ),
+              ),
             ),
 
             //Product Image
@@ -87,28 +92,34 @@ class _HistoryItemState extends State<HistoryItem> {
                 },
               ),
             ),
-            SizedBox(
-              width: 10,
-            ),
+
             //Product Title And Brand
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.product.productTitle,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.product.productTitle,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Text(
-                    widget.product.brand,
-                    style: TextStyle(
-                      fontSize: 12,
+                    Text(
+                      widget.product.brand,
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
 
@@ -135,20 +146,23 @@ class _HistoryItemState extends State<HistoryItem> {
             ),
 
             //Delete Icon
-            Container(
-              child: IconButton(
-                onPressed: () {
-                  print('Delete History Item Button Pressed!!!');
-                },
-                icon: ImageIcon(
-                  AssetImage(
-                    'lib/assets/icons/product/delete_icon.png'
-                  )
+            SizedBox(
+              height: double.infinity,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: IconButton(
+                  onPressed: () {
+                    widget.deleteProduct();
+                  },
+                  icon: ImageIcon(
+                    size: 20,
+                    AssetImage(
+                      'lib/assets/icons/product/delete_icon.png'
+                    )
+                  ),
                 ),
               ),
             ),
-
-
           ],
         ),
         ),

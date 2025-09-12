@@ -28,10 +28,9 @@ class _MySearchBarState extends State<MySearchBar> {
               if(productName.isNotEmpty) {
                 ProductDto? product = await dataService.GetProductByName(productName);   //get the desired product
 
-                if(product != null)
-                {
+                if(product != null) {
                   // Save product to search history
-                  _myBox.put('PRODUCT', product);
+                  _myBox.add(product);
 
                   // Send user to product page
                   Navigator.push(
@@ -39,7 +38,7 @@ class _MySearchBarState extends State<MySearchBar> {
                     MaterialPageRoute(builder: (context) => ProductInfo(product: product, dataService: dataService))
                   );
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar (
                     SnackBar(
                       content: const Text(
                         "Product not found. Would you like to add a new product?",

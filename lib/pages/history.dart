@@ -25,41 +25,114 @@ class _HistoryPageState extends State<HistoryPage> {
     return box.values.cast<ProductDto>().toList();
   }
 
+  void deleteProduct(int index) {
+    setState(() {
+      final box = Hive.box('HISTORY_BOX');
+      box.deleteAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text(
-          'History',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+          child: Text(
+            'History',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
         ),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(30),
-          child: FutureBuilder<List<ProductDto>>(
-            future: _loadProducts(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error loading history');
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Text('Haven\'t searched or scanned items yet.');
-              } else {
-                final products = snapshot.data!;
-                return ListView.builder(
-                  itemCount: products.length,
-                  itemBuilder: (context, index) {
-                    return HistoryItem(
-                      product: products[index],
-                      dataService: dataService,
-                    );
+      body: Center(
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20), // Whole page padding
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                shape: CircleBorder(),
+                                checkColor: const Color.fromARGB(255, 255, 255, 255),
+                                value: false,
+                                onChanged: (bool? flag) {
+                                  flag = true; // TODO: Add functionality to select all
+                                }
+                              ),
+                          
+                              Text(
+                                'Select All',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: SizedBox(
+                            child: IconButton(
+                              onPressed: () {
+                                // TODO: Add functionality to delete all
+                              },
+                              icon: ImageIcon(
+                                size: 20,
+                                AssetImage(
+                                  'lib/assets/icons/product/delete_icon.png'
+                                )
+                              ),
+                            ),
+                          ),
+                        )
+                      ),
+                    ],
+                  ),
+                ),
+                
+                FutureBuilder<List<ProductDto>>(
+                  future: _loadProducts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error loading history');
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Text('Haven\'t searched or scanned items yet');
+                    } else {
+                      final products = snapshot.data!;
+                      final last10 = products.reversed.take(10).toList(); // Get last 10 items
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: last10.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: HistoryItem(
+                                product: last10[index],
+                                dataService: dataService,
+                                deleteProduct: () => deleteProduct(products.length - 1 - index),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
                   },
-                );
-              }
-            },
+                ),
+              ],
+            ),
           ),
         ),
       ),
