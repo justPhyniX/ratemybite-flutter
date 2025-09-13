@@ -8,12 +8,16 @@ class HistoryItem extends StatefulWidget {
   final ProductDto product;
   final DataService dataService;
   final VoidCallback deleteProduct;
+  final bool isChecked;
+  final ValueChanged<bool> onChecked;
 
   const HistoryItem({
     super.key,
     required this.product,
     required this.dataService,
-    required this.deleteProduct
+    required this.deleteProduct,
+    required this.isChecked,
+    required this.onChecked
   });
 
   @override
@@ -21,15 +25,13 @@ class HistoryItem extends StatefulWidget {
 }
 
 class _HistoryItemState extends State<HistoryItem> {
-  bool isChecked = false;
-
   @override
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
         height: 95,
         decoration: ShapeDecoration(
-          color: isChecked
+          color: widget.isChecked
           ? Theme.of(context).colorScheme.onPrimaryContainer
           : Theme.of(context).colorScheme.primaryContainer,
           shape: RoundedRectangleBorder(
@@ -40,7 +42,12 @@ class _HistoryItemState extends State<HistoryItem> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProductInfo(product: widget.product, dataService: widget.dataService,)),
+              MaterialPageRoute(
+                builder: (context) => ProductInfo(
+                  product: widget.product,
+                  dataService: widget.dataService,
+                )
+              ),
             );
           },
           child: Row(
@@ -53,10 +60,10 @@ class _HistoryItemState extends State<HistoryItem> {
                 child: Checkbox(
                   shape: CircleBorder(),
                   checkColor: const Color.fromARGB(255, 255, 255, 255),
-                  value: isChecked,
+                  value: widget.isChecked,
                   onChanged: (bool? value) {
                     setState(() {
-                      isChecked = value ?? false;
+                      widget.onChecked(value ?? false);
                     });
                   },
                 ),

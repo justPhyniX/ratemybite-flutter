@@ -13,11 +13,19 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   late final DataService dataService;
+  List<ProductDto> products = [];
+  Set<int> selectedIndexes = {};
 
   @override
   void initState() {
     super.initState();
     dataService = DataService();
+    // Load products and reverse to show most recent first, limit to 10
+    _loadProducts().then((loaded) {
+      setState(() {
+        products = loaded.reversed.take(10).toList();
+      });
+    });
   }
 
   Future<List<ProductDto>> _loadProducts() async {
@@ -25,10 +33,40 @@ class _HistoryPageState extends State<HistoryPage> {
     return box.values.cast<ProductDto>().toList();
   }
 
+  // Deletes a single product and updates selection state
   void deleteProduct(int index) {
+    final box = Hive.box('HISTORY_BOX');
+    final finalIndex = products.length - 1 - index;
+    box.deleteAt(finalIndex);
     setState(() {
-      final box = Hive.box('HISTORY_BOX');
-      box.deleteAt(index);
+      products.removeAt(index);
+      selectedIndexes.remove(index);
+    });
+  }
+
+  // Deletes all selected products, clearing selection after
+  void deleteSelected() {
+    final box = Hive.box('HISTORY_BOX');
+    final toDelete = selectedIndexes.toList()..sort((a, b) => b.compareTo(a)); // Sort in descending order to avoid index issues
+    for(final index in toDelete) {
+      final finalIndex = products.length - 1 - index;
+      box.deleteAt(finalIndex);
+      products.removeAt(index);
+    }
+
+    setState(() {
+      selectedIndexes.clear();
+    });
+  }
+
+  // Selects or deselects all items based on the checkbox value
+  void toggleSelectAll(bool? value) {
+    setState(() {
+      if(value == true) {
+        selectedIndexes = Set.from(List.generate(products.length, (i) => i));
+      } else {
+        selectedIndexes.clear();
+      }
     });
   }
 
@@ -52,9 +90,11 @@ class _HistoryPageState extends State<HistoryPage> {
             child: Column(
               children: [
                 Container(
+                
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Row(
                     children: [
+                      
                       Expanded(
                         child: SizedBox(
                           child: Row(
@@ -62,10 +102,8 @@ class _HistoryPageState extends State<HistoryPage> {
                               Checkbox(
                                 shape: CircleBorder(),
                                 checkColor: const Color.fromARGB(255, 255, 255, 255),
-                                value: false,
-                                onChanged: (bool? flag) {
-                                  flag = true; // TODO: Add functionality to select all
-                                }
+                                value: selectedIndexes.length == products.length && products.isNotEmpty,
+                                onChanged: toggleSelectAll
                               ),
                           
                               Text(
@@ -78,15 +116,13 @@ class _HistoryPageState extends State<HistoryPage> {
                           ),
                         ),
                       ),
-
+                
                       Expanded(
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: SizedBox(
                             child: IconButton(
-                              onPressed: () {
-                                // TODO: Add functionality to delete all
-                              },
+                              onPressed: selectedIndexes.isEmpty ? null : deleteSelected,
                               icon: ImageIcon(
                                 size: 20,
                                 AssetImage(
@@ -100,37 +136,39 @@ class _HistoryPageState extends State<HistoryPage> {
                     ],
                   ),
                 ),
-                
-                FutureBuilder<List<ProductDto>>(
-                  future: _loadProducts(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Error loading history');
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Text('Haven\'t searched or scanned items yet');
-                    } else {
-                      final products = snapshot.data!;
-                      final last10 = products.reversed.take(10).toList(); // Get last 10 items
-                      return Expanded(
-                        child: ListView.builder(
-                          itemCount: last10.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 10.0),
-                              child: HistoryItem(
-                                product: last10[index],
-                                dataService: dataService,
-                                deleteProduct: () => deleteProduct(products.length - 1 - index),
+                Expanded(
+                  child: SizedBox(
+                    child: Center(
+                      child: products.isEmpty
+                        ? Text('Haven\'t searched or scanned items yet')
+                        : Expanded(
+                          child: ListView.builder(
+                                itemCount: products.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 10.0),
+                                    child: HistoryItem(
+                                      product: products[index],
+                                      dataService: dataService,
+                                      isChecked: selectedIndexes.contains(index), // Pass selection state and call back to each item
+                                      onChecked: (checked) {
+                                        setState(() {
+                                          if (checked) {
+                                            selectedIndexes.add(index);
+                                          } else {
+                                            selectedIndexes.remove(index);
+                                          }
+                                        });
+                                      },
+                                      deleteProduct: () => deleteProduct(index),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
                         ),
-                      );
-                    }
-                  },
-                ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
