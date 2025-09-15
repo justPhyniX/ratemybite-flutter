@@ -1,7 +1,18 @@
-class Ingredient {
+import 'package:hive_ce/hive.dart';
+part 'Ingredient.g.dart';
+
+@HiveType(typeId: 1)
+class Ingredient extends HiveObject{
+  @HiveField(0)
   final String name;
+
+  @HiveField(1)
   final bool allergen;
+
+  @HiveField(2)
   final int points;
+
+  @HiveField(3)
   final String description;
 
   Ingredient(

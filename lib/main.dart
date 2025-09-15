@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:ratemybite/Models/DTOs/ProductDto.dart';
+import 'package:ratemybite/Models/Ingredient.dart';
 import 'package:ratemybite/pages/history.dart';
 import 'package:ratemybite/pages/more.dart';
 import 'package:ratemybite/pages/scan.dart';
@@ -6,7 +9,16 @@ import 'package:ratemybite/theme.dart';
 
 
 
-void main() {
+void main() async {
+  // Initialize Hive (Local db)
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(ProductDtoAdapter());
+  Hive.registerAdapter(IngredientAdapter());
+  
+  // Open a hive box
+  await Hive.openBox('HISTORY_BOX');
+
   runApp(const MyApp());
 }
 

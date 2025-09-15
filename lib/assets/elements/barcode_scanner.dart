@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:ratemybite/data_service.dart';
 import 'package:ratemybite/Models/DTOs/ProductDto.dart';
 import 'package:ratemybite/pages/add_product.dart';
@@ -47,6 +48,7 @@ class _MyBarcodeScannerState extends State<MyBarcodeScanner> {
   @override
   Widget build(BuildContext context) {
     final dataService = DataService();  //handles the api calls
+    final _myBox = Hive.box("HISTORY_BOX");
 
     if (_isLoading) {
       return const SizedBox(
@@ -98,6 +100,10 @@ class _MyBarcodeScannerState extends State<MyBarcodeScanner> {
 
                 ProductDto? product = await dataService.GetProductByBarcode(barcode ??= '0');
                 if (product != null) {
+                  // Save product to search history
+                  _myBox.add(product);
+
+                  // Send user to product page
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ProductInfo(product: product, dataService: dataService)),
