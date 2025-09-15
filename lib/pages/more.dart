@@ -131,12 +131,16 @@ class MorePage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 123.0, vertical: 23.0),
                   child: SizedBox(
-                    child: const Text(
-                      'v. 1.0',
-                      style: TextStyle(
-                        color: Color.fromARGB(100, 255, 255, 255),
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold
+                    width: double.infinity,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'v1.0.0',
+                        style: TextStyle(
+                          color: Color.fromARGB(100, 255, 255, 255),
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold
+                        ),
                       ),
                     )
                   ),

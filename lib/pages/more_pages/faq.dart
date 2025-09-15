@@ -42,15 +42,35 @@ class FaqPage extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-                  child: Text(
-                    'Q: How are product ratings calculated?\n'
-                    'A: Every ingredient is stored in our database '
-                    'alongside a score out of 100 which is determined '
-                    'after researching its possible pros and cons in '
-                    'human health. The app then takes these scores and '
-                    'calculates an average. If the average is between 0 '
-                    'and 20, the product will be rated with an \'E\', if '
-                    'it is between 21 and 40, the rating will be a \'D\' etc.\n\n'
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: 'Q: ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const TextSpan(
+                          text: 'How are product ratings calculated?\n',
+                        ),
+                        const TextSpan(
+                          text: 'A: ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const TextSpan(
+                          text: 'Every ingredient is stored in our database '
+                              'alongside a score out of 100 which is determined '
+                              'after researching its possible pros and cons in '
+                              'human health. The app then takes these scores and '
+                              'calculates an average. If the average is between 0 '
+                              'and 20, the product will be rated with an \'E\', if '
+                              'it is between 21 and 40, the rating will be a \'D\' etc.\n\n',
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
